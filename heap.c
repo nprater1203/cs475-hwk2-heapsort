@@ -4,8 +4,16 @@
  *  Created on: Jul 1, 2013
  *      Author:
  */
+
+/*
+	Name: Nicholas Prater
+	Course: CS 481 OS
+	Professor: Dr. Chiu
+	Date: 1/30/23
+*/
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "employee.h"
 #include "heap.h"
 
@@ -23,8 +31,8 @@ void heapSort(Employee *A, int n)
 	// TODO - swap A[n-1] with A[0], since A[0] is the smallest number.
 	// TODO - A[n-1] now sorted in place, so decrement n
 	// TODO - Heapify the elements from A[0] up to A[n-1] (which leaves the newly sorted element alone)
-
-	printf("BUILDING");
+		
+	printf("\n");
 	buildHeap(A,n);
 
 	while(n > 0){
@@ -45,7 +53,10 @@ void heapSort(Employee *A, int n)
 void buildHeap(Employee *A, int n)
 {
 	// TODO - heapify() every element from A[n/2] down-to A[0]
-	heapify(A,n/2,n);
+
+	for(int i = (n/2); i >= 0; i--){
+		heapify(A,i,n);
+	}
 }
 
 /**
@@ -56,6 +67,7 @@ void buildHeap(Employee *A, int n)
  * @param	i	Index of current element to heapify
  * @param	n	Size of the heap
  */
+
 void heapify(Employee *A, int i, int n)
 {
 	// TODO - get index of left child of element i
@@ -68,28 +80,23 @@ void heapify(Employee *A, int i, int n)
 	//			Then recursively heapify A[smaller].
 	// TODO - Continue recursion as long as i is within range AND either right_child and left_child are still within range.
 
-	int leftChildIndex = (2*i) + 1;
-	int rightChildIndex = leftChildIndex + 1;
-	int smallerChildIndex = leftChildIndex;
+	int leftIndex = left_child(i);
+	int rightIndex = right_child(i);
 
-	if(A[rightChildIndex].salary < A[leftChildIndex].salary){
-		smallerChildIndex = rightChildIndex;
-	}
-
-	while(i >= 0 && i < n && ((leftChildIndex >= 0 && leftChildIndex < n)
-						  ||(rightChildIndex >= 0 && rightChildIndex < n))) {
-
-		if(A[rightChildIndex].salary < A[leftChildIndex].salary){
-			smallerChildIndex = rightChildIndex;
+	if(i >= 0 && i < n && ((rightIndex >= 0 && rightIndex < n) 
+										||  (leftIndex >= 0 && leftIndex < n)))
+	{
+		int smallerIndex = leftIndex;
+		if(rightIndex < n && A[rightIndex].salary < A[leftIndex].salary){
+			smallerIndex = rightIndex;
 		}
-		if(A[i].salary > A[smallerChildIndex].salary){
-			swap(&A[i],&A[smallerChildIndex]);
-			heapify(A,smallerChildIndex,n-1);
+
+		if(A[i].salary > A[smallerIndex].salary)
+		{
+			swap(&A[i], &A[smallerIndex]);
+			heapify(A,smallerIndex,n);
 		}
-	}
-
-
-
+ 	}
 }
 
 /**
@@ -100,9 +107,27 @@ void heapify(Employee *A, int i, int n)
 void swap(Employee *e1, Employee *e2)
 {
 	// TODO
-	Employee* temp = e1;
-	e1 = e2;
-	e2 = temp;
+	Employee temp = *e1;
+	*e1 = *e2;
+	*e2 = temp;
+}
+
+/**
+ * Calculates the left child of the current index
+ * @param int Current index
+ */
+int left_child(int i)
+{
+	return 2*(i+1)-1;
+}
+
+/**
+ * Calculates the right child of the current index
+ * @param int Current index
+ */
+int right_child(int i)
+{
+	return 2*(i+1);
 }
 
 /**
@@ -112,9 +137,11 @@ void swap(Employee *e1, Employee *e2)
  */
 void printList(Employee *A, int n)
 {
-	// TODO
 	for(int i = 0; i < n; i++){
-		printf("[id=%s sal=%d], ", A[i].name, A[i].salary);
+		printf("[id=%s sal=%d]", A[i].name, A[i].salary);
+		if(i != n-1){
+			printf(", ");
+		}
 	}
-
+	printf("\n");
 }

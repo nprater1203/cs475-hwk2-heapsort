@@ -14,46 +14,27 @@
 
 int main(int argc, char *argv[])
 {
-	//TODO
-	const int MAX_EMPLOYEES = 2;
-	//int i = 0;
-
+	const int MAX_EMPLOYEES = 5;
 	Employee employee[MAX_EMPLOYEES];
-
 	char* employeeName = malloc(20*sizeof(int));
-	//int salary;
 
+	// Prompt the MAX_EMPLOYEES times for employees' names and salaries
 	for(int i = 0; i < MAX_EMPLOYEES; i++){
-		//printf("i: %d  \n",i);
 		printf("Name: ");
-		//printf("HERE");
-		//fgets(employee[i].name,MAX_EMPLOYEES,stdin);
-		//int nameSize = 0;
+
+		// Only allow MAX_NAME_LEN of chars for employees' names
 		scanf("%s", employeeName);
-		// while(*employeeName == '\0'){
-		// 	nameSize++;
-		// 	employeeName++;
-		// }
-		// if(nameSize > MAX_NAME_LEN){
-		// 	printf("Too long of name... try again...");
-		// 	printf("Name: ");
-		// 	scanf("%s", employeeName);
-		// }
-		//printf("Employee Name: %s", employee[i].name);
+		strncpy(employee[i].name,employeeName,MAX_NAME_LEN);
+
 		printf("Salary: ");
 		scanf("%d", &employee[i].salary);
-		//scanf("%s","");
-		//printf("Salary of employee: %d", employee[i].salary);
-
-
-		//employee[i].name = employeeName;
 		printf("\n");
 	}
 
-	//printf("Getting heap sort");
 	heapSort(employee,MAX_EMPLOYEES);
-	//printf("Printing the list");
 	printList(employee,MAX_EMPLOYEES);
+
+	free(employeeName);
 
 	return 0;
 }
